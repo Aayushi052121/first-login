@@ -1,0 +1,17 @@
+*
+{
+    margin: 5px;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    /* 'poppins' */
+}
+section
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    min-height: 100vh;
+
+}
