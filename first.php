@@ -3,64 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>list</title>
     <link rel="stylesheet" href="first.css">
-    <link rel="database" href="login.php"> 
 </head>
 <body>
-    <section>
-        <div class="box">
-        <div class="form">  
-            <h1> Login </h1>
-            <form>
-                 <label>Name</label>
-                 <div class = inputBox>
-                   <input type="text" >
-                 </div>
-               
-                 <label>Email</label>
-                 <div class = inputBox>
-                   <input type="text" >
-                 </div>
+  
+    <?php
+include 'db.php';
 
-                 <label>Password</label>
-                 <div class = inputBox>
-                   <input type="text" >
-                 </div>  
-               <input type= submit>
-            <form>
-            </div>
-    </section>
+$sql = "SELECT id, name, email, password FROM login";
+$result = $conn->query($sql);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Users List</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>password</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                        <td>" . $row["id"]. "</td>
+                        <td>" . $row["name"]. "</td>
+                        <td>" . $row["email"]. "</td>
+                        <td>" . $row["password"]. "</td>
+                        </tr>";
+                    }
+                } 
+                else {
+                    echo "<tr><td colspan='5'> results found</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
 
 <?php
-ob_start();
+$conn->close();
+?>   
 
-if(isset($_POST)){
-    $_Username = $_POST['username'];
-    $_Password = $_POST['password'];
-
-    $_conn = new mysqli('localhost', 'root', 'Aayu');
-    if($_conn->connect_error)
-    {
-      die("connection failed: " . $conn->connect_error);
-    }
-    else
-    {
-      $stmt = $conn->prepare("insert into login( Name , Email, Password)values(?, ?)");
-      $stmt->bind_param("ss",$Name, $Email, $Password);
-      $stmt->execute();
-      $stmt->close();
-      $conn->close();
-    }
-    if($Name !=''&& $Email !=''&& $Password !='')
-    {
-      header("Location:second.php");
-    }
-    else{
-        echo "Please fill all fields.....!!!!!!!!!!!!";
-    }
-
-}
-?>
+</body>
+</html>
